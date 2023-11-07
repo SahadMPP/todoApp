@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('TODO APP')),
+        title: const Center(child: Text('Todo List')),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: navigatorToAddscreen,
@@ -50,10 +50,9 @@ class _HomeState extends State<Home> {
                 trailing: PopupMenuButton(
                   onSelected: (value) {
                     if (value == 'edit') {
-                      // go to edit page
+                      navigatorToEditscreen(item);
                     }
                     if (value == 'delete') {
-                      // delete the item
                       deleteById(id);
                     }
                   },
@@ -79,11 +78,21 @@ class _HomeState extends State<Home> {
     );
   }
 
+  Future<void> navigatorToEditscreen(Map item) async {
+    final route = MaterialPageRoute(
+      builder: (context) => ScondScreen(todo: item),
+    );
+    await Navigator.of(context).push(route);
+    setState(() {
+      isLoading = true;
+    });
+    getTodo();
+  }
+
   Future<void> navigatorToAddscreen() async {
     final route = MaterialPageRoute(
       builder: (context) => const ScondScreen(),
     );
-
     await Navigator.of(context).push(route);
     setState(() {
       isLoading = true;
